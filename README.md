@@ -1,6 +1,6 @@
-# Tic-Tac-Toe MoE Lab
+# Noughtlear Proliferation
 
-A deliberately tiny local-model teaching project. The task has nine move tokens (`a`–`i`) and accepts at most eight input tokens. Odd-indexed moves are X; even-indexed moves are O. The required target is one next-square token, or the final input token when the history is invalid.
+A small educational mixture-of-experts tic-tac-toe simulation. Its projected outcome under equally capable play is a mutually assured draw, not a claim about real-world strategic systems.
 
 ## What works now
 
