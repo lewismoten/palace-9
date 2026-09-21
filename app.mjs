@@ -1,5 +1,6 @@
 import { SQUARES, analyze, boardFor, classifyExpert, optimalPolicy, choosePolicyMove } from './rules.mjs';
 import { drawNetwork, routeTimeline, LABEL, hitTestNetwork, activeExperts, EXPERTS } from './network.mjs';
+import { trainingRounds } from './training.mjs';
 const expertNames={win:'Win',block:'Block',fork:'Create fork',defendFork:'Prevent fork',position:'Center / corner',opening:'Opening',legality:'Legality',routing:'Combine answers'};
 let history='';
 const $=id=>document.getElementById(id);
@@ -22,4 +23,12 @@ $('history').addEventListener('input',e=>{history=e.target.value.toLowerCase().s
 $('oracle').onclick=()=>{const state=analyze(history);if(state.valid&&history.length<8){history+=choosePolicyMove(history,{mode:$('mode').value,seed:$('seed').value,temperature:Number($('temperature').value)||0});render()}};
 for(const id of ['mode','seed','temperature'])$(id).addEventListener('input',render);
 $('reset').onclick=()=>{history='';render()};
+let trainer=null,playing=false,trainingHistories=[];
+const trainConfig=()=>({layers:+$('train-layers').value,nodes:+$('train-nodes').value,rate:+$('train-rate').value,batch:32});
+const paintTraining=step=>{const total=Object.values(step.totals).reduce((a,b)=>a+b,0)||1;$('train-progress').value=step.index/step.total;$('train-status').textContent=`Round ${step.round+1} · ${step.index.toLocaleString()} / ${step.total.toLocaleString()} reachable positions · ${step.model.widths.join(' → ')}`;$('train-metrics').replaceChildren(...Object.entries(step.totals).map(([name,count])=>{const d=document.createElement('div');d.className='expert';d.innerHTML=`<b>${name}</b>${(100*count/total).toFixed(1)}% · ${count}`;return d}));};
+async function ensureTrainingData(){if(trainingHistories.length)return;const data=await fetch('data/reachable-policy.json').then(r=>r.json());trainingHistories=data.examples.map(row=>row.history);}
+async function runTraining(){await ensureTrainingData();playing=true;const loop=()=>{if(!playing)return;for(let i=0;i<4;i++){const step=trainer.next().value;paintTraining(step)}requestAnimationFrame(loop)};requestAnimationFrame(loop)}
+$('train-start').onclick=async()=>{if(!trainer)trainer=trainingRounds((await (await fetch('data/reachable-policy.json')).json()).examples.map(row=>row.history),trainConfig());runTraining()};
+$('train-pause').onclick=()=>{playing=false;$('train-status').textContent+=' · paused; current weights retained'};
+$('train-reset').onclick=()=>{playing=false;trainer=null;$('train-progress').value=0;$('train-status').textContent='Weights reset. Change layers/nodes, then Start.';$('train-metrics').replaceChildren()};
 render();
