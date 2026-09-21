@@ -166,10 +166,11 @@ export async function createWebGPUTrainer(model) {
     limitation: WEBGPU_TRAINER_LIMITATION,
     model,
     trainOne,
-    async trainRound(histories, rate = 0.025, onProgress) {
+    async trainRound(histories, rate = 0.025, onProgress, shouldContinue) {
       assertLive();
       const totals = { trained: 0, skipped: 0 };
       for (let index = 0; index < histories.length; index++) {
+        if (shouldContinue && !shouldContinue()) return { ...totals, cancelled: true, model: await syncModel() };
         if (await trainOne(histories[index], rate)) totals.trained++; else totals.skipped++;
         await onProgress?.({ index: index + 1, total: histories.length, ...totals });
       }
