@@ -12,7 +12,7 @@ assert.match(source, /async trainRound\(histories, rate/, 'trainer must retain G
 
 const app = fs.readFileSync(new URL('./app.mjs', import.meta.url), 'utf8');
 const html = fs.readFileSync(new URL('./index.html', import.meta.url), 'utf8');
-for (const token of ['createWebGPUTrainer', 'webGPUTrainerAvailable', 'CPU Worker (JavaScript)', 'backend-choice', 'await new Promise(resolve => setTimeout(resolve, 0))']) assert.ok(app.includes(token), `missing responsive backend UI contract: ${token}`);
+for (const token of ['createWebGPUTrainer', 'webGPUTrainerAvailable', 'CPU Worker (JavaScript)', 'backend-choice', 'await new Promise(resolve=>requestAnimationFrame(resolve))', 'WebGPU dense training · preparing GPU buffers', 'WebGPU dense training · position']) assert.ok(app.includes(token), `missing responsive backend UI contract: ${token}`);
 assert.doesNotMatch(app, /cpuRoundMeasurement\(/, 'WebGPU start must not synchronously run an entire CPU comparison round on the UI thread');
 assert.match(html, /id="backend-choice"/, 'training UI must offer backend selection');
 console.log('webgpu dense trainer and UI source contract: ok');
