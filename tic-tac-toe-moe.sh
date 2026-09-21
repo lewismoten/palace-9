@@ -16,7 +16,7 @@ case "${1:-}" in
     if running; then printf 'Already running (PID %s) at http://%s:%s/\n' "$(<"$PID_FILE")" "$HOST" "$PORT"; exit 0; fi
     rm -f "$PID_FILE"
     cd "$ROOT"
-    nohup python3 -m http.server "$PORT" --bind "$HOST" >"$LOG_FILE" 2>&1 &
+    nohup python3 "$ROOT/static_server.py" --port "$PORT" --host "$HOST" --directory "$ROOT" >"$LOG_FILE" 2>&1 &
     pid=$!; printf '%s\n' "$pid" >"$PID_FILE"
     for _ in {1..30}; do
       if python3 - "$PORT" <<'PY'
