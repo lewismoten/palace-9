@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import { createModel, evaluateModel, exportModel, importModel, invalidCorrectionTarget } from './training.mjs';
+assert.equal(invalidCorrectionTarget('aa'),'a');
+assert.equal(invalidCorrectionTarget('aj'),'a');
+const model=createModel({layers:2,nodes:8});
+const report=evaluateModel(model,['','a','ab']);
+assert.equal(report.total,3);
+assert.ok('draw' in report.percent && 'invalid' in report.percent && 'correction' in report.percent);
+const restored=importModel(exportModel(model));
+assert.deepEqual(restored.widths,model.widths);
+assert.throws(()=>importModel({format:'wrong'}),/format/);
+console.log('validation and model exchange: ok');
