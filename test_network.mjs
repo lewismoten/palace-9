@@ -19,4 +19,6 @@ const routedEdges=[
 const routes=strongestRoutes(routedEdges,1,[0],1);
 assert.equal(routes.length,1);
 assert.deepEqual(routes[0].map(edge=>edge.weight),[.9,.8,.7]);
+const fourStage=[...routedEdges,{stage:3,fromIndex:0,toIndex:0,weight:.6}];
+assert.deepEqual(strongestRoutes(fourStage,1,[0],1)[0].map(edge=>edge.weight),[.9,.8,.7,.6]);
 console.log('network routing: ok');
