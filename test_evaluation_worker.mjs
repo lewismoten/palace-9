@@ -3,5 +3,5 @@ import fs from 'node:fs';
 const source=fs.readFileSync(new URL('./evaluation-worker.mjs',import.meta.url),'utf8');
 assert.match(source,/evaluateModel/);
 assert.match(source,/type!==\'evaluate\'/);
-assert.match(source,/type:'evaluation'/);
+assert.match(source,/corrections:false/);
 console.log('evaluation worker contract: ok');
