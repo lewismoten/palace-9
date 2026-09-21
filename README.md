@@ -34,7 +34,7 @@ The UI is deliberately explicit: its current labels are oracle-derived strategy 
 
 ## Network visualizer
 
-The live network panel draws every edge in the declared illustrative `8 token slots → 32 hidden units → 32 hidden units → 8 experts → 9 squares` layout. It uses deterministic initialized values so the graph remains stable while you inspect games. Cyan edge brightness represents absolute illustrative weight magnitude; lime highlights the gate-selected expert and its output path. The route strip preserves selections from the opening state through the current history.
+The live network panel draws every edge in the declared illustrative `8 move-context slots → 32 hidden units → 32 hidden units → 8 experts → 9 squares` layout. The slots are ordered positions in the at-most-eight-move game history, not vocabulary entries. Amber edges are positive illustrative weights, cyan edges are negative, and their thickness/opacity shows magnitude. Nodes are colored by their illustrative biases; lime still marks gate-selected expert paths.
 
 These are intentionally labeled as illustrative weights, not learned checkpoint tensors. When browser training produces real tensors, this topology can render those values instead.
 
