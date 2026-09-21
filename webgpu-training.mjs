@@ -171,7 +171,7 @@ export async function createWebGPUTrainer(model) {
       const totals = { trained: 0, skipped: 0 };
       for (let index = 0; index < histories.length; index++) {
         if (await trainOne(histories[index], rate)) totals.trained++; else totals.skipped++;
-        onProgress?.({ index: index + 1, total: histories.length, ...totals });
+        await onProgress?.({ index: index + 1, total: histories.length, ...totals });
       }
       return { ...totals, model: await syncModel() };
     },
