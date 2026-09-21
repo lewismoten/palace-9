@@ -32,6 +32,12 @@ The generated data currently contains 4,519 deduplicated reachable board positio
 
 The UI is deliberately explicit: its current labels are oracle-derived strategy annotations, not claims that an untrained neural network has independently discovered those strategies.
 
+## Network visualizer
+
+The live network panel draws every edge in the declared illustrative `8 token slots → 32 hidden units → 32 hidden units → 8 experts → 9 squares` layout. It uses deterministic initialized values so the graph remains stable while you inspect games. Cyan edge brightness represents absolute illustrative weight magnitude; lime highlights the gate-selected expert and its output path. The route strip preserves selections from the opening state through the current history.
+
+These are intentionally labeled as illustrative weights, not learned checkpoint tensors. When browser training produces real tensors, this topology can render those values instead.
+
 ## Ollama bridge — not yet executed
 
 Ollama needs a supported GGUF architecture and tokenizer; it cannot execute arbitrary browser JavaScript tensors. A correct bridge is:
