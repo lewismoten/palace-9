@@ -1,55 +1,15 @@
 export const SQUARES = 'abcdefghi';
 const LINES = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
 const MOVE_ORDER = [4,0,2,6,8,1,3,5,7];
-
 export function encodeHistory(history='') { return [...history].map(token => SQUARES.indexOf(token)); }
-export function boardFor(history='') {
-  const board=Array(9).fill(null);
-  for (let i=0;i<history.length;i++) board[SQUARES.indexOf(history[i])]=i%2?'O':'X';
-  return board;
-}
-export function winner(board) {
-  for (const line of LINES) if (board[line[0]] && line.every(i=>board[i]===board[line[0]])) return board[line[0]];
-  return null;
-}
-export function analyze(history='') {
-  const tokens=[...history]; let valid=tokens.length<=8; let reason='';
-  if (!tokens.every(t=>SQUARES.includes(t))) { valid=false; reason='non-square token'; }
-  if (new Set(tokens).size!==tokens.length) { valid=false; reason='repeated square'; }
-  const board=valid?boardFor(history):Array(9).fill(null);
-  const won=valid&&winner(board);
-  if (won) { valid=false; reason=`${won} already won`; }
-  return {valid,reason,board,turn:tokens.length%2?'O':'X',last:tokens.at(-1)||''};
-}
-function immediate(board,mark) {
-  for(let i=0;i<9;i++) if(!board[i]) { board[i]=mark; const ok=winner(board)===mark; board[i]=null; if(ok)return i; }
-  return -1;
-}
-function score(board,turn,root) {
-  const won=winner(board); if(won)return won===root?10:-10;
-  const open=board.map((v,i)=>v?null:i).filter(i=>i!==null); if(!open.length)return 0;
-  const next=turn==='X'?'O':'X';
-  const values=open.map(i=>{board[i]=turn;const value=score(board,next,root);board[i]=null;return value;});
-  return turn===root?Math.max(...values):Math.min(...values);
-}
-export function oracleMove(history='') {
-  const state=analyze(history); if(!state.valid)return state.last;
-  const win=immediate(state.board,state.turn); if(win>=0)return SQUARES[win];
-  const other=state.turn==='X'?'O':'X', block=immediate(state.board,other); if(block>=0)return SQUARES[block];
-  const moves=MOVE_ORDER.filter(i=>!state.board[i]);
-  let best=moves[0],bestScore=-Infinity;
-  for(const move of moves){state.board[move]=state.turn;const value=score(state.board,state.turn==='X'?'O':'X',state.turn);state.board[move]=null;if(value>bestScore){bestScore=value;best=move;}}
-  return SQUARES[best];
-}
-export function classifyExpert(history='') {
-  const state=analyze(history); if(!state.valid)return 'legality';
-  if(immediate([...state.board],state.turn)>=0)return 'win';
-  const other=state.turn==='X'?'O':'X'; if(immediate([...state.board],other)>=0)return 'block';
-  if(history.length===0)return 'opening';
-  return history.length<3?'position':'fork';
-}
-export function featureVector(history='') {
-  const state=analyze(history), vector=[];
-  for(const cell of state.board) vector.push(cell==='X'?1:0,cell==='O'?1:0,cell?0:1);
-  vector.push(state.turn==='X'?1:0,state.turn==='O'?1:0); return vector;
-}
+export function boardFor(history='') { const board=Array(9).fill(null);for(let i=0;i<history.length;i++)board[SQUARES.indexOf(history[i])]=i%2?'O':'X';return board; }
+export function winner(board) { for(const line of LINES)if(board[line[0]]&&line.every(i=>board[i]===board[line[0]]))return board[line[0]];return null; }
+export function analyze(history='') { const tokens=[...history];let valid=tokens.length<=8,reason='';if(!tokens.every(t=>SQUARES.includes(t))){valid=false;reason='non-square token'}if(new Set(tokens).size!==tokens.length){valid=false;reason='repeated square'}const board=valid?boardFor(history):Array(9).fill(null),won=valid&&winner(board);if(won){valid=false;reason=`${won} already won`}return {valid,reason,board,turn:tokens.length%2?'O':'X',last:tokens.at(-1)||''}; }
+function immediate(board,mark) {for(let i=0;i<9;i++)if(!board[i]){board[i]=mark;const ok=winner(board)===mark;board[i]=null;if(ok)return i}return -1}
+function score(board,turn,root) {const won=winner(board);if(won)return won===root?10:-10;const open=board.map((v,i)=>v?null:i).filter(i=>i!==null);if(!open.length)return 0;const next=turn==='X'?'O':'X',values=open.map(i=>{board[i]=turn;const v=score(board,next,root);board[i]=null;return v});return turn===root?Math.max(...values):Math.min(...values)}
+export function optimalPolicy(history='') {const state=analyze(history);if(!state.valid)return {valid:false,optimal:[state.last],probabilities:SQUARES.split('').map(s=>s===state.last?1:0),scores:Array(9).fill(null)};const scores=Array(9).fill(null),open=MOVE_ORDER.filter(i=>!state.board[i]);const winning=open.filter(i=>{state.board[i]=state.turn;const yes=winner(state.board)===state.turn;state.board[i]=null;return yes});const other=state.turn==='X'?'O':'X',blocks=open.filter(i=>{state.board[i]=other;const yes=winner(state.board)===other;state.board[i]=null;return yes});for(const i of open){state.board[i]=state.turn;scores[i]=score(state.board,other,state.turn);state.board[i]=null}const best=Math.max(...scores.filter(v=>v!==null)),optimal=(winning.length?winning:blocks.length?blocks:MOVE_ORDER.filter(i=>scores[i]===best)).map(i=>SQUARES[i]),probabilities=SQUARES.split('').map(s=>optimal.includes(s)?1/optimal.length:0);return {valid:true,optimal,probabilities,scores,best}}
+const rng=seed=>{let n=(Number(seed)>>>0)||1;return()=>((n=(n*1664525+1013904223)>>>0)/4294967296)};
+export function choosePolicyMove(history='',{mode='deterministic',seed=1983,temperature=0}={}) {const policy=optimalPolicy(history);if(!policy.valid)return policy.optimal[0];if(mode==='deterministic'||temperature<=0&&mode==='experimental')return policy.optimal[0];const legal=SQUARES.split('').filter((_,i)=>policy.scores[i]!==null),random=rng(seed);if(mode==='varied')return policy.optimal[Math.floor(random()*policy.optimal.length)];const weights=legal.map((s,i)=>Math.exp((policy.scores[SQUARES.indexOf(s)]||-10)/Math.max(.01,temperature))),total=weights.reduce((a,b)=>a+b,0);let pick=random()*total;for(let i=0;i<legal.length;i++){pick-=weights[i];if(pick<=0)return legal[i]}return legal.at(-1)}
+export function oracleMove(history='') {return choosePolicyMove(history,{mode:'deterministic'})}
+export function classifyExpert(history='') {const state=analyze(history);if(!state.valid)return 'legality';if(immediate([...state.board],state.turn)>=0)return 'win';const other=state.turn==='X'?'O':'X';if(immediate([...state.board],other)>=0)return 'block';if(history.length===0)return 'opening';return history.length<3?'position':'fork'}
+export function featureVector(history='') {const state=analyze(history),vector=[];for(const cell of state.board)vector.push(cell==='X'?1:0,cell==='O'?1:0,cell?0:1);vector.push(state.turn==='X'?1:0,state.turn==='O'?1:0);return vector}

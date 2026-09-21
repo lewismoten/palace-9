@@ -1,4 +1,4 @@
-import { SQUARES, analyze, boardFor, classifyExpert, oracleMove } from './rules.mjs';
+import { SQUARES, analyze, boardFor, classifyExpert, optimalPolicy, choosePolicyMove } from './rules.mjs';
 import { drawNetwork, routeTimeline, LABEL, hitTestNetwork, activeExperts, EXPERTS } from './network.mjs';
 const expertNames={win:'Win',block:'Block',fork:'Create fork',defendFork:'Prevent fork',position:'Center / corner',opening:'Opening',legality:'Legality',routing:'Combine answers'};
 let history='';
@@ -7,8 +7,9 @@ function enableNetworkHover(){const canvas=$('network'),tip=$('network-tooltip')
 function render(){
   const state=analyze(history), board=boardFor(history); $('history').value=history;
   $('board').replaceChildren(...board.map((mark,i)=>{const b=document.createElement('button');b.textContent=mark||SQUARES[i];b.className=mark?.toLowerCase()||'';b.disabled=!!mark||!state.valid;b.title=`${SQUARES[i]} · ${['top left','top middle','top right','middle left','center','middle right','bottom left','bottom middle','bottom right'][i]}`;b.onclick=()=>{history+=SQUARES[i];render()};return b}));
-  const expert=classifyExpert(history), next=oracleMove(history);
-  $('prediction').textContent=state.valid?`Next: ${next} · ${state.turn} to move · routed to ${expertNames[expert]}.`:`Invalid: ${state.reason}. Required output: ${next||'—'}.`;
+  const expert=classifyExpert(history), policy=optimalPolicy(history), config={mode:$('mode').value,seed:$('seed').value,temperature:Number($('temperature').value)||0},next=choosePolicyMove(history,config);
+  const targets=policy.optimal.map((square,i)=>`${square}: ${(policy.probabilities[SQUARES.indexOf(square)]*100).toFixed(0)}%`).join(' · ');
+  $('prediction').textContent=state.valid?`Target optimal set: ${targets}. Chosen (${config.mode}, seed ${config.seed}, T ${config.temperature}): ${next} · ${state.turn} to move · routed to ${expertNames[expert]}.`:`Invalid: ${state.reason}. Required output: ${next||'—'}.`;
   $('game-status').textContent=history?`History: ${history} · token ${history.length} of 8 input slots.`:'Click a square to start: X moves first.';
   const routed=activeExperts(history);$('experts').replaceChildren(...Object.entries(expertNames).map(([key,label])=>{const d=document.createElement('div');d.className='expert '+(routed.includes(key)?'active':'');d.innerHTML=`<b>${label}</b>${routed.includes(key)?'selected for this position':'inactive routing branch'}`;return d}));
   drawNetwork($('network'),history);enableNetworkHover();
@@ -18,6 +19,7 @@ function render(){
 }
 $('apply').onclick=()=>{history=$('history').value.toLowerCase().slice(0,8);render()};
 $('history').addEventListener('input',e=>{history=e.target.value.toLowerCase().slice(0,8)});
-$('oracle').onclick=()=>{const state=analyze(history);if(state.valid&&history.length<8){history+=oracleMove(history);render()}};
+$('oracle').onclick=()=>{const state=analyze(history);if(state.valid&&history.length<8){history+=choosePolicyMove(history,{mode:$('mode').value,seed:$('seed').value,temperature:Number($('temperature').value)||0});render()}};
+for(const id of ['mode','seed','temperature'])$(id).addEventListener('input',render);
 $('reset').onclick=()=>{history='';render()};
 render();
