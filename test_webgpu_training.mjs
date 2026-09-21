@@ -2,7 +2,9 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 const source = fs.readFileSync(new URL('./webgpu-training.mjs', import.meta.url), 'utf8');
-for (const token of ['WEBGPU_TRAINER_LIMITATION', 'export async function createWebGPUTrainer', 'export async function trainWebGPURound', 'navigator.gpu', 'requestAdapter', 'createComputePipeline', 'tanh(', 'exp(', 'probability - target', 'delta', 'weights[index] = weights[index] - learningRate.value', 'syncModel', 'mapAsync', 'GPUMapMode.READ']) assert.ok(source.includes(token), `missing WebGPU training contract: ${token}`);
+for (const token of ['WEBGPU_TRAINER_LIMITATION', 'export async function createWebGPUTrainer', 'export async function trainWebGPURound', 'navigator.gpu', 'requestAdapter', 'createComputePipeline', 'tanh(', 'exp(', 'probability - trainingTarget', 'delta', 'weights[index] = weights[index] - learningRate.value', 'syncModel', 'mapAsync', 'GPUMapMode.READ']) assert.ok(source.includes(token), `missing WebGPU training contract: ${token}`);
+assert.doesNotMatch(source, /var<storage, read> target:/, 'WGSL must not use reserved identifier target');
+assert.match(source, /trainingTarget/, 'WGSL must use a non-reserved training target identifier');
 assert.doesNotMatch(source, /widths\.length\s*!==\s*2/, 'trainer must support hidden-layer models');
 assert.match(source, /MAX_HIDDEN_LAYERS\s*=\s*3/, 'trainer must state its bounded hidden-layer limit');
 assert.match(source, /MAX_HIDDEN_NODES\s*=\s*64/, 'trainer must state its bounded width limit');

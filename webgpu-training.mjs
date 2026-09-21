@@ -44,7 +44,7 @@ fn forward(@builtin(global_invocation_id) id: vec3<u32>) {
 
 const outputDeltaShader = (size) => /* wgsl */ `
 @group(0) @binding(0) var<storage, read> logits: array<f32>;
-@group(0) @binding(1) var<storage, read> target: array<f32>;
+@group(0) @binding(1) var<storage, read> trainingTarget: array<f32>;
 @group(0) @binding(2) var<storage, read_write> delta: array<f32>;
 @compute @workgroup_size(${WORKGROUP_SIZE})
 fn outputDelta(@builtin(global_invocation_id) id: vec3<u32>) {
@@ -55,7 +55,7 @@ fn outputDelta(@builtin(global_invocation_id) id: vec3<u32>) {
   var denominator = 0.0;
   for (var i = 0u; i < ${size}u; i = i + 1u) { denominator = denominator + exp(logits[i] - maximum); }
   let probability = exp(logits[index] - maximum) / denominator;
-  delta[index] = probability - target[index];
+  delta[index] = probability - trainingTarget[index];
 }`;
 
 const updateShader = (inputSize, outputSize) => /* wgsl */ `
