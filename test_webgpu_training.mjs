@@ -17,5 +17,7 @@ assert.doesNotMatch(app, /cpuRoundMeasurement\(/, 'WebGPU start must not synchro
 assert.match(html, /id="best-round"/, 'training UI must reserve a best frozen round section');
 assert.match(html, /id="training-diagnostics"/, 'training UI must reserve bounded mistake diagnostics');
 assert.match(app, /Best frozen round/, 'app must track a best frozen round');
+assert.match(app, /Training-pass \(pre-update\)/, 'round totals must state that each position was measured before its own SGD update');
+assert.match(app, /Frozen snapshot/, 'frozen metrics must be named as the comparable fixed-weight measurement');
 assert.match(app, /evaluation\.mistakes/, 'app must render evaluator diagnostics');
 console.log('webgpu dense trainer and UI source contract: ok');
