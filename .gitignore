@@ -1,4 +1,22 @@
+# Dependencies and local runtime state
 node_modules/
-data/*.tmp
+__pycache__/
+*.py[cod]
 *.log
 *.pid
+
+# Local services, generated reports, and temporary test outputs
+data/*.tmp
+.tmp-*/
+snapshots/
+cuda-snapshots/
+quantization-results.json
+
+# Training archives are reproducible local artifacts; only the promoted
+# browser checkpoint in data/ is versioned.
+torch-snapshots-*/
+torch-snapshots*/
+
+# Locally built CUDA experiments
+cuda_moe_train
+cuda_probe

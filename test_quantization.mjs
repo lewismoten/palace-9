@@ -1,0 +1,21 @@
+import assert from 'node:assert/strict';
+import { quantizeMatrix, quantizeModel, quantizationComparison, quantizationSuite, quantizationName } from './quantization.mjs';
+import { createModel, predict } from './training.mjs';
+
+assert.deepEqual(quantizeMatrix([[1,-.4,.1]],'int4'),[[1,-3/7,1/7]]);
+assert.deepEqual(quantizeMatrix([[1,-.4,.1]],'int8'),[[1,-51/127,13/127]]);
+assert.deepEqual(quantizeMatrix([[1,-.3,0]],'int1'),[[1,-1,1]]);
+assert.deepEqual(quantizeMatrix([[1,-.4,.1],[.1,-.04,.01]],'int4-row'),[[1,-3/7,1/7],[.1,-3/70,.014285714285714287]]);
+const source=createModel({layers:1,nodes:4,experts:2,expertNodes:3});
+const quantized=quantizeModel(source,'int4');
+assert.notEqual(quantized,source);
+assert.equal(quantized.encoder.weights.length,source.encoder.weights.length);
+assert.equal(quantized.quantization.format,'int4');
+const comparison=quantizationComparison(source,quantized,[''],{'':{valid:true,probabilities:Array(9).fill(1/9),scores:Array(9).fill(0),best:0,optimal:['a']}});
+assert.equal(comparison.corpus,1);
+assert.equal(comparison.baselineTopChoices.length,1);
+assert.equal(comparison.variantTopChoices[0],predict(quantized,'').probabilities.indexOf(Math.max(...predict(quantized,'').probabilities)));
+const suite=quantizationSuite(source,[''],{'':{valid:true,probabilities:Array(9).fill(1/9),scores:Array(9).fill(0),best:0,optimal:['a']}});
+assert.deepEqual(suite.map(row=>row.format),['float32','float16','int8','int4','int4-row','int2','int1']);
+assert.equal(quantizationName('int4'),'INT4 · Q4-style');
+console.log('quantization: ok');

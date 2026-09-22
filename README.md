@@ -19,24 +19,20 @@ python3 -m http.server 18777 --bind 127.0.0.1
 
 The generated data currently contains 4,519 deduplicated reachable board positions. The theoretical raw board space is `3^9 = 19,683`.
 
-## Intended tiny MoE
+## Trainable board-state MoE
 
-| component | target |
-|---|---:|
-| vocabulary | 9 square tokens plus required special tokens during GGUF export |
-| input context | 8 moves |
-| output | 9-way next-square distribution |
-| encoder | 1–2 transformer blocks, hidden size 16–64 |
-| experts | win, block, fork, defend-fork, position, opening, legality, routing |
-| routing | one selected expert per board position |
+The active browser model is a real, CPU-Worker-trained mixture of experts:
 
-The UI is deliberately explicit: its current labels are oracle-derived strategy annotations, not claims that an untrained neural network has independently discovered those strategies.
+| component | shape / behavior |
+|---|---|
+| board-state input | 27 one-hot X/O/empty values plus turn and invalid/duplicate features (`31`) |
+| trainable encoder | `31 → 9` tanh board embedding |
+| shared trunk | `9 → 36 → 36` tanh layers |
+| router | trainable `36 → 9` softmax gate |
+| experts | nine generic trainable `36 → 9 → 10` tanh/logit branches |
+| aggregation | gate-weighted expert logits; nine board squares plus the `!` invalid-history sentinel |
 
-## Network visualizer
-
-The live network panel draws every edge in the declared illustrative `8 context slots → 3×3 board-state encoder → 32 hidden units → 32 hidden units → 8 experts → 9 squares` layout. The slots are ordered positions in the at-most-eight-move game history, not vocabulary entries. Amber edges are positive illustrative weights, cyan edges are negative, and their thickness/opacity shows magnitude. Nodes are colored by their illustrative biases; lime still marks gate-selected expert paths.
-
-These are intentionally labeled as illustrative weights, not learned checkpoint tensors. When browser training produces real tensors, this topology can render those values instead.
+The promoted synchronized checkpoint is evaluated through FP32, FP16, symmetric per-tensor INT8, and symmetric per-output-row INT4 simulations. Each path has 0 policy losses, 0 occupied-square choices, and 0 malformed-history errors on the frozen corpus. The INT formats are dequantize simulations, not GGUF packed-runtime formats.
 
 ## Ollama bridge — not yet executed
 
