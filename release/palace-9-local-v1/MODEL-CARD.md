@@ -32,6 +32,14 @@ The `browser/` directory contains FP32, F16, Q6_K, and Q4_K_M JSON envelopes for
 
 The Q6_K and Q4_K_M artifact labels describe the released GGUF files. This particular tiny architecture is mixed-storage: incompatible tensors remain F16/F32, and the browser manifests expose the actual type of every stored tensor rather than claiming that every tensor is Q6_K or Q4_K.
 
+## Acknowledgments
+
+The release's code and documentation were developed with assistance from
+**GPT-5.6-terra Med**, accessed through
+[Hermes](https://hermes-agent.nousresearch.com/) and using **Honcho** for
+context and project-memory support. Lewis Moten remains the project designer,
+maintainer, and publisher.
+
 ## Scope
 
 This is a 3×3 tic-tac-toe state policy, not a general chat model. It has no external command authority. Do not infer a conventional multi-turn chat protocol from this raw-state completion model.

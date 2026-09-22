@@ -204,6 +204,15 @@ These are different models and execution paths. The browser harness makes the
 release weights inspectable in JavaScript; Ollama serves the raw causal model;
 and the deterministic oracle remains the ground truth for perfect play.
 
+## Acknowledgments
+
+PALACE-9 was designed and directed by Lewis Moten. Its code and documentation
+were developed with assistance from **GPT-5.6-terra Med**, accessed through
+[Hermes](https://hermes-agent.nousresearch.com/) and using **Honcho** for
+context and project-memory support. This assistance does not replace the
+repository's source history, validation records, licensing, or the human
+maintainer's responsibility for published work.
+
 ## Validation and provenance
 
 The deterministic oracle validates legal move behavior, including optimal-policy
