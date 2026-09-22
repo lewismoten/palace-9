@@ -1,6 +1,6 @@
 # PALACE-9
 
-> **Predictive Autonomous Learning And Nuclear Command Evaluation**
+> **Predictive Autonomous Learning And ~~Nuclear~~ Command Evaluation**
 >
 > A local, fictional 3×3 strategic-simulation and model-inspection project.
 
@@ -14,10 +14,10 @@ separate components:
 
 The map, DEFCON strip, trajectories, launch-detection text, and cipher display
 are visual fiction. They contain no real-world data, targeting, command
-authority, weapons control, or nuclear-systems capability. The 3×3 exercise is
-a simulation, not a nuclear-systems tool.
+authority, weapons control, or operational-system capability. The 3×3 exercise
+is a simulation, not an operational system.
 
-![Full PALACE-9 browser page: a playable 3×3 board, Palance-9 controls, model cards, and the local checkpoint inspector with fictional map overlay.](assets/palace-9-screenshot.jpg)
+![Full PALACE-9 browser page: a playable 3×3 board, Palace-9 controls, model cards, and the local checkpoint inspector with fictional map overlay.](assets/palace-9-screenshot.jpg)
 
 **Live demo:** [lewismoten.github.io/palace-9](https://lewismoten.github.io/palace-9/)
 

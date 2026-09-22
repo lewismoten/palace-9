@@ -22,7 +22,7 @@ assert.match(app,/game=newGame\(game\).*players\(\)===0|players\(\)===0.*game=ne
 assert.match(app,/autoplayDelay\(autoGamesPlayed\)/,'autoplay pace is regulated by completed policy-vs-policy games');
 assert.match(app,/autoGamesPlayed\+\+;game=newGame\(game\)/,'each completed self-play game advances the speed schedule');
 assert.ok(page.indexOf('<h2>Play</h2>')<page.indexOf('id="board"'),'the board stays in the left play panel');
-assert.ok(page.indexOf('<h2>Palance-9</h2>')<page.indexOf('id="players"'),'player selection stays in the Palance-9 panel');
+assert.ok(page.indexOf('<h2>Palace-9</h2>')<page.indexOf('id="players"'),'player selection stays in the Palace-9 panel');
 assert.ok(page.indexOf('<h2>Model</h2>')<page.indexOf('id="precision"'),'precision selection has a dedicated model panel');
 assert.match(page,/\.board button\.empty\{color:#485148\}/,'empty board labels stay deliberately subdued');
 assert.match(app,/mark\?\.toLowerCase\(\)\|\|'empty'/,'unoccupied squares use the empty visual treatment');
@@ -40,7 +40,7 @@ assert.match(page,/class="compact-controls"/,'game and artifact controls use the
 assert.match(page,/\.compact-move\{grid-template-columns:9ch auto;width:max-content;margin-top:8px\}/,'Evaluate stays beside the eight-token history input');
 assert.match(page,/\.compact-move input\{width:9ch/,'history input visibly accommodates all eight tokens');
 assert.match(page,/<select id="players"[^>]*><option value="0">0<\/option><option value="1" selected>1<\/option><option value="2">2<\/option><\/select><\/div>\s*<div class="compact-controls"><button id="reset">New game<\/button>/,'New game has its own row below Players');
-assert.match(page,/<button id="reset">New game<\/button><\/div>\s*<p class="palance-note"><strong>PALANCE:<\/strong> Predictive Autonomous Learning And Nuclear Command Evaluation is a fictional training exercise for a theater of war played on a 3×3 grid, powered by deep neural networks and generative AI models\. The blips and trajectories on this screen are fantasy, not real-world data\. It is a simulation, not a nuclear-systems tool\.<\/p>/,'New game is followed by the PALANCE fictional-training note');
+assert.match(page,/<button id="reset">New game<\/button><\/div>\s*<p class="palance-note"><strong>PALANCE:<\/strong> Predictive Autonomous Learning And <del>Nuclear<\/del> Command Evaluation is a fictional training exercise for a 3×3 theater-of-war simulation, powered by deep neural networks and generative AI models\. The blips and trajectories on this screen are fantasy, not real-world data\. It is a simulation, not an operational system\.<\/p>/,'New game is followed by the PALANCE fictional-simulation note with Nuclear struck through');
 assert.match(page,/\.palance-note\{font:12px\/1\.45 ui-monospace,monospace;color:var\(--muted\);margin:12px 0 0\}/,'PALANCE note remains compact beneath New game');
 assert.ok(page.indexOf('id="players"')<page.indexOf('id="reset"'),'New game follows Players');
 assert.ok(page.indexOf('id="apply"')<page.indexOf('id="precision"'),'Precision follows Evaluate');
@@ -48,7 +48,7 @@ assert.match(page,/\.compact-move\+\.compact-controls\{margin-top:8px\}/,'contro
 assert.doesNotMatch(page,/shall we play a game/i,'top-page tagline is removed');
 assert.doesNotMatch(page,/Play a constrained tic-tac-toe game/i,'top-page explanatory text is removed');
 assert.doesNotMatch(page,/<h1>Palace-9<\/h1>/,'top-page title is removed');
-assert.match(page,/<h2>Palance-9<\/h2>/,'control panel uses the requested Palance-9 title');
+assert.match(page,/<h2>Palace-9<\/h2>/,'control panel uses the correct Palace-9 title');
 assert.doesNotMatch(page,/Published causal Qwen2-MoE weight inspector/,'map title is removed');
 assert.doesNotMatch(page,/id="network-summary"/,'post-credit inspector text is removed');
 assert.match(page,/class="map-panel"/,'map sits in a dedicated floating section');
