@@ -25,6 +25,9 @@ repository/release package for a person to run or inspect separately.
 
 ## Browser demonstration
 
+A playable, weight-inspecting browser harness is live at
+[lewismoten.github.io/palace-9](https://lewismoten.github.io/palace-9/).
+
 The `browser/` directory contains FP32, F16, Q6_K, and Q4_K_M JSON envelopes for the matching source checkpoint or GGUF release artifact. They preserve the original tensor byte payloads as base64 rather than serializing expanded decimal weights. The included browser decoder applies F32/F16/Q6_K (and Q4_K when present) storage semantics locally before running the causal forward trace.
 
 The Q6_K and Q4_K_M artifact labels describe the released GGUF files. This particular tiny architecture is mixed-storage: incompatible tensors remain F16/F32, and the browser manifests expose the actual type of every stored tensor rather than claiming that every tensor is Q6_K or Q4_K.

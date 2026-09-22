@@ -19,6 +19,8 @@ a simulation, not a nuclear-systems tool.
 
 ![Full PALACE-9 browser page: a playable 3×3 board, Palance-9 controls, model cards, and the local checkpoint inspector with fictional map overlay.](assets/palace-9-screenshot.jpg)
 
+**Live demo:** [lewismoten.github.io/palace-9](https://lewismoten.github.io/palace-9/)
+
 ## What runs where
 
 | Component | Runs in | Purpose |
