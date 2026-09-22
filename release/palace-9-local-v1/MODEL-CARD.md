@@ -16,6 +16,19 @@ Submit only a raw move history made from `a` through `i`. The deployment templat
 
 `f16-ollama-validation.json` records F16 local Ollama fixtures. Exhaustive raw `/completion` gate reports are retained in `runtime-gates/` for Q6_K and Q4_K_M; the F16 source report and Hugging Face checkpoint are retained in `source-checkpoint/`. Every gate used literal `<bos>` plus raw history, one output token, and temperature zero.
 
+## Ollama packaging scope
+
+An `ollama create` import consumes this GGUF and the Modelfile configuration; it
+does not import or display the repository README, screenshot, website harness,
+or browser JSON envelopes. Those companion files remain available in the source
+repository/release package for a person to run or inspect separately.
+
+## Browser demonstration
+
+The `browser/` directory contains FP32, F16, Q6_K, and Q4_K_M JSON envelopes for the matching source checkpoint or GGUF release artifact. They preserve the original tensor byte payloads as base64 rather than serializing expanded decimal weights. The included browser decoder applies F32/F16/Q6_K (and Q4_K when present) storage semantics locally before running the causal forward trace.
+
+The Q6_K and Q4_K_M artifact labels describe the released GGUF files. This particular tiny architecture is mixed-storage: incompatible tensors remain F16/F32, and the browser manifests expose the actual type of every stored tensor rather than claiming that every tensor is Q6_K or Q4_K.
+
 ## Scope
 
 This is a 3×3 tic-tac-toe state policy, not a general chat model. It has no external command authority. Do not infer a conventional multi-turn chat protocol from this raw-state completion model.

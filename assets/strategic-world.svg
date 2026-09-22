@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 500" preserveAspectRatio="none" aria-hidden="true">
+  <!-- Original low-angle strategic-map backdrop; deliberately subdued behind live tensors. -->
+  <g transform="translate(15 25) skewX(-9) scale(1 .82)" fill-rule="evenodd" stroke-linejoin="round">
+    <g fill="#526f59" fill-opacity=".045" stroke="#78a27b" stroke-opacity=".20" stroke-width="1.4">
+      <!-- Canada, Mexico, Central America, Greenland -->
+      <path d="M52 132 88 91 145 68 219 69 286 94 315 130 294 161 249 168 205 190 161 178 117 197 82 176Z M133 187l46 15 27 37-23 20-35-18-28-29Z M274 63l44-35 51 16 11 32-48 16Z"/>
+      <!-- South America -->
+      <path d="M251 244 293 257 327 300 340 350 319 414 291 450 268 409 262 358 237 305Z"/>
+      <!-- Europe / North Asia outside Russian strategic region -->
+      <path d="M497 124 533 90 578 89 609 116 601 147 557 154 518 145Z M674 87 735 60 812 70 853 99 835 128 770 128 725 112Z"/>
+      <!-- Africa -->
+      <path d="M509 184 556 175 594 207 600 258 570 320 532 343 505 301 490 244Z"/>
+      <!-- Middle East, India, Southeast Asia, Japan -->
+      <path d="M609 173 655 169 690 193 674 222 627 219Z M681 221 721 224 747 273 727 317 696 291Z M749 168 803 172 846 205 834 246 790 236 759 213Z M859 167l17 18-11 24-14-21Z"/>
+      <!-- Australia / New Zealand -->
+      <path d="M868 340 925 325 969 349 960 388 902 397 866 374Z M986 405l13 12-7 20-12-14Z"/>
+    </g>
+    <!-- United States, isolated in blue inside the North American landmass. -->
+    <path fill="#79cbe5" fill-opacity=".075" stroke="#79cbe5" stroke-opacity=".34" stroke-width="1.6" d="M101 146 151 132 206 135 250 151 246 173 205 177 166 191 129 179 105 165Z"/>
+    <!-- Russia, isolated in red across northern Eurasia. -->
+    <path fill="#e77878" fill-opacity=".065" stroke="#e77878" stroke-opacity=".34" stroke-width="1.6" d="M603 109 665 88 735 83 797 93 862 116 920 128 1001 153 983 177 900 178 829 194 764 178 697 166 637 148Z"/>
+    <g stroke="#a6afa4" stroke-opacity=".10" stroke-width="1" fill="none">
+      <path d="M12 122 1140 58M8 214l1140-64M5 306l1140-64M0 398l1140-64"/>
+      <path d="M153 34 96 440M357 23 321 451M561 15 546 458M765 12l54 451M969 18l123 437"/>
+    </g>
+    <path fill="#a6afa4" fill-opacity=".028" d="M0 438 1148 350v142H0Z"/>
+  </g>
+</svg>

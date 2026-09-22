@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+for(const file of ['cuda_moe_trainer.cu','run_gpu_training.mjs'])assert.ok(fs.existsSync(file),`missing ${file}`);
+const cuda=fs.readFileSync('cuda_moe_trainer.cu','utf8');
+const runner=fs.readFileSync('run_gpu_training.mjs','utf8');
+assert.match(cuda,/cudaSetDevice\(0\)/);
+assert.match(cuda,/__global__/);
+assert.match(runner,/palace-9-moe\/v1/);
+assert.match(runner,/palace-9-round-/);
+assert.match(runner,/loss.*invalid|invalid.*loss/s);
+console.log('CUDA MoE snapshot runner contract: ok');

@@ -21,7 +21,11 @@ assert.deepEqual(difficultySettings('normal'),{mode:'experimental',temperature:4
 assert.deepEqual(difficultySettings('hard'),{mode:'varied',temperature:0});
 assert.deepEqual(difficultySettings('expert'),{mode:'deterministic',temperature:0});
 assert.ok(new Set([1983,1984,1985,1986].map(seed=>choosePolicyMove('',{...difficultySettings('hard'),seed}))).size>1,'different game seeds choose among equal optimal openings');
-assert.deepEqual(gameResult('aebdch'),{winner:'X',line:[0,1,2],draw:false,terminal:true});
-assert.deepEqual(gameResult('abcfdgeih'),{winner:null,line:null,draw:true,terminal:true});
+assert.deepEqual(gameResult('aebdch'),{winner:'X',line:[0,1,2],lines:[[0,1,2]],draw:false,terminal:true});
+assert.deepEqual(gameResult('abcfdgeih'),{winner:null,line:null,lines:[],draw:true,terminal:true});
+assert.equal(gameResult('abcedh').winner,'O','computer O can end the game with a valid winning line');
+assert.equal(analyze('abcedh').valid,false,'strict next-move analysis rejects an already-terminal history');
+const oWin=gameResult('abcedh');
+assert.equal(oWin.winner?`${oWin.winner} Wins`:analyze('abcedh').valid?'':'Invalid','O Wins','terminal winner takes precedence over next-move invalidity in the UI');
 assert.equal(gameResult('ab').terminal,false);
 console.log('tic-tac-toe rules: ok');

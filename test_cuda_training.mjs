@@ -1,0 +1,27 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import { execFileSync } from 'node:child_process';
+
+const root=path.dirname(new URL(import.meta.url).pathname);
+const runner=path.join(root,'cuda-training.mjs');
+const native=path.join(root,'cuda_moe_train.cu');
+assert.ok(fs.existsSync(runner),'missing CUDA training orchestrator');
+assert.ok(fs.existsSync(native),'missing CUDA MoE trainer');
+const runnerSource=fs.readFileSync(runner,'utf8');
+const nativeSource=fs.readFileSync(native,'utf8');
+for(const token of ['CUDA_VISIBLE_DEVICES','nvcc','exportModel','annotations','evaluateModel','palace-9-round-']) assert.ok(runnerSource.includes(token),`runner missing ${token}`);
+for(const token of ['cudaSetDevice(0)','cudaGetDevice','cudaMalloc','atomicAdd','softmax','router','experts']) assert.ok(nativeSource.includes(token),`CUDA trainer missing ${token}`);
+const output=path.join(root,`.tmp-cuda-training-test-${process.pid}`);
+fs.rmSync(output,{recursive:true,force:true});
+const stdout=execFileSync(process.execPath,[runner,'--rounds','1','--batch','64','--output',output],{cwd:root,encoding:'utf8',timeout:180000});
+const result=JSON.parse(stdout);
+assert.equal(result.gpu.index,0);
+assert.equal(result.roundsCompleted,1);
+assert.ok(fs.existsSync(result.snapshots[0]));
+const snapshot=JSON.parse(fs.readFileSync(result.snapshots[0],'utf8'));
+assert.equal(snapshot.format,'palace-9-moe/v1');
+assert.ok(snapshot.annotations);
+for(const key of ['rounds','losses','invalid','wins','draws']) assert.equal(typeof snapshot.annotations[key],'number',key);
+fs.rmSync(output,{recursive:true,force:true});
+console.log('CUDA GPU 0 MoE batch trainer and annotated snapshot: ok');

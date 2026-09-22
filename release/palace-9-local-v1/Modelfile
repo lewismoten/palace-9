@@ -1,6 +1,6 @@
-# Palace-9 local preview only: candidate F16 GGUF remains under exhaustive
-# runtime validation. This package is not a release claim.
-FROM /home/ai/tic-tac-toe-moe/palace9-qwen2moe-raw-history-f16.gguf
+# Palace-9 F16 raw-history deployment model. The F16 artifact passed the
+# exhaustive raw-history runtime gate and the Ollama fixture probes.
+FROM ./palace9-qwen2moe-raw-history-f16.gguf
 PARAMETER num_ctx 16
 PARAMETER temperature 0
 TEMPLATE """<bos>{{ .Prompt }}"""

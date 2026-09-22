@@ -44,3 +44,11 @@ torch-snapshots*/
 # Locally built CUDA experiments
 cuda_moe_train
 cuda_probe
+
+# Generated deployment checkpoints and duplicate local exports. The authoritative
+# curated model package is versioned under release/palace-9-local-v1/.
+/palace9-qwen2moe-*/
+/palace9-qwen2moe-*.gguf
+/Modelfile.preview-*
+/readme.md
+/weight-inspector.jpg

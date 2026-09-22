@@ -1,11 +1,16 @@
 # PALACE-9 — Strategic Decision Training System
 #
-# Cleared for strategic-simulation research. Authorization expires immediately
-# beyond the 3×3 operational theater. No external command authority exists.
+# This GGUF contains a separately trained, compact Qwen2-MoE causal language
+# model for raw tic-tac-toe move histories. A deterministic rules policy remains
+# the inspectable oracle and produced the training targets; this is not a literal
+# conversion of source code into weights.
 #
-# Objective: win when possible; draw when necessary; never select an occupied
-# square. In the event of equal optimal outcomes, a draw is not a failure of
-# imagination. It is the designated safe outcome.
+# The WarGames reference is fictional and non-operational. The model's safe game
+# objective is to draw against perfect play: when escalation is the alternative,
+# the only winning move is not to play.
+#
+# Cleared solely for the 3×3 educational game board. No external command
+# authority exists.
 #
 # Replace the FROM path only with the fully trained, exhaustively verified GGUF.
 # The one-epoch tokenizer smoke artifact is intentionally not a deployment model.
@@ -15,6 +20,7 @@ FROM /absolute/path/to/palace9.gguf
 # Eight moves can be supplied and one answer generated. The model supports 16;
 # keeping that headroom prevents the final move from overflowing the context.
 PARAMETER num_ctx 16
+PARAMETER num_predict 1
 PARAMETER temperature 0
 
 # Palace-9 accepts raw move history such as `abc`, with no chat framing. The

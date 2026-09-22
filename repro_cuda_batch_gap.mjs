@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+import {createModel, trainOne, evaluateModel} from './training.mjs';
+const data=JSON.parse(fs.readFileSync('data/reachable-policy.json','utf8'));
+const examples=data.examples||data;
+const histories=examples.map(x=>x.history);
+const policies=Object.fromEntries(examples.map(x=>[x.history,x.policy]));
+const model=createModel();
+for(let round=0;round<9;round++)for(const row of examples)trainOne(model,row.history,.025);
+const report=evaluateModel(model,histories,policies,{corrections:false});
+console.log(JSON.stringify({rounds:9,loss:report.totals.loss,invalid:report.totals.invalid,draw:report.totals.draw,win:report.totals.win}));

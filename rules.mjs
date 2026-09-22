@@ -10,8 +10,13 @@ const LINES = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
 const MOVE_ORDER = [4,0,2,6,8,1,3,5,7];
 export function encodeHistory(history='') { return [...history].map(token => SQUARES.indexOf(token)); }
 export function boardFor(history='') { const board=Array(9).fill(null);for(let i=0;i<history.length;i++)board[SQUARES.indexOf(history[i])]=i%2?'O':'X';return board; }
-export function winner(board) { for(const line of LINES)if(board[line[0]]&&line.every(i=>board[i]===board[line[0]]))return board[line[0]];return null; }
-export function gameResult(history='',finalMove=''){const complete=finalMove&&SQUARES.includes(finalMove)?history+finalMove:history,board=boardFor(complete);for(const line of LINES){const mark=board[line[0]];if(mark&&line.every(index=>board[index]===mark))return {winner:mark,line,draw:false,terminal:true}}return {winner:null,line:null,draw:complete.length===9&&board.every(Boolean),terminal:complete.length===9&&board.every(Boolean)};}
+export function winningLines(board){return LINES.filter(line=>board[line[0]]&&line.every(index=>board[index]===board[line[0]]));}
+export function winner(board) { return winningLines(board)[0] ? board[winningLines(board)[0][0]] : null; }
+export function gameResult(history='',finalMove=''){
+  const complete=finalMove&&SQUARES.includes(finalMove)?history+finalMove:history,board=boardFor(complete),lines=winningLines(board),line=lines[0]||null;
+  if(line)return {winner:board[line[0]],line,lines,draw:false,terminal:true};
+  return {winner:null,line:null,lines:[],draw:complete.length===9&&board.every(Boolean),terminal:complete.length===9&&board.every(Boolean)};
+}
 export function analyze(history='') { const tokens=[...history];let valid=tokens.length<=8,reason='';if(!tokens.every(t=>SQUARES.includes(t))){valid=false;reason='non-square token'}if(new Set(tokens).size!==tokens.length){valid=false;reason='repeated square'}const board=valid?boardFor(history):Array(9).fill(null),won=valid&&winner(board);if(won){valid=false;reason=`${won} already won`}return {valid,reason,board,turn:tokens.length%2?'O':'X',last:tokens.at(-1)||''}; }
 function immediate(board,mark) {for(let i=0;i<9;i++)if(!board[i]){board[i]=mark;const ok=winner(board)===mark;board[i]=null;if(ok)return i}return -1}
 function score(board,turn,root) {const won=winner(board);if(won)return won===root?10:-10;const open=board.map((v,i)=>v?null:i).filter(i=>i!==null);if(!open.length)return 0;const next=turn==='X'?'O':'X',values=open.map(i=>{board[i]=turn;const v=score(board,next,root);board[i]=null;return v});return turn===root?Math.max(...values):Math.min(...values)}
