@@ -3,4 +3,5 @@
 FROM ./palace9-qwen2moe-raw-history-f16.gguf
 PARAMETER num_ctx 16
 PARAMETER temperature 0
+PARAMETER num_predict 1
 TEMPLATE """<bos>{{ .Prompt }}"""
