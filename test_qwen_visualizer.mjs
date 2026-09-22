@@ -37,14 +37,14 @@ test('strategic overlay rotates through five verified bases and targets the oppo
   assert.ok(decisive.moves.every(move=>move.progress===1),'a winning round completes every active path');
 });
 
-test('simulation map starts at DEFCON 1 and presents a fictional launch-detection label after move one',()=>{
+test('map starts at DEFCON 1 and presents Launch Detection after move one',()=>{
   const idle=simulationAlertPlan(''),firstMove=simulationAlertPlan('a');
   assert.deepEqual(idle.layout,{columns:1,width:52,height:14,x:.225},'DEFCON sits between the embedding and RMSNorm columns as wide rectangles');
   assert.deepEqual(idle.levels,[
     {level:1,color:'#f2f4ea',active:true},{level:2,color:'#e77878',active:false},{level:3,color:'#d1ef65',active:false},{level:4,color:'#70c986',active:false},{level:5,color:'#79cbe5',active:false},
   ]);
   assert.equal(idle.alert,null);
-  assert.deepEqual(firstMove.alert,{country:'us',label:'SIMULATION · LAUNCH DETECTION'});
+  assert.deepEqual(firstMove.alert,{country:'us',label:'LAUNCH DETECTION'});
 });
 
 
@@ -90,7 +90,8 @@ test('logits use five stacked rows and sparse panels use visual selection only',
   assert.match(source,/drawSimulationStatus\(ctx,w,h,overlayHistory\)/,'the fictional DEFCON and alert presentation is redrawn with each simulation state');
   assert.match(source,/fillText\('DEFCON',left\+layout\.width\/2,top-8\)/,'the DEFCON heading is centered over its stack');
   assert.match(source,/layout:\{columns:1,width:52,height:14,x:\.225\}/,'DEFCON uses a vertical column of wide rectangles between embedding and RMSNorm');
-  assert.match(source,/SIMULATION · LAUNCH DETECTION/,'the post-move label is explicitly fictional');
+  assert.match(source,/label:'LAUNCH DETECTION'/,'the post-move map label is Launch Detection');
+  assert.doesNotMatch(source,/SIMULATION · LAUNCH DETECTION/,'the map label does not prepend Simulation');
   assert.match(source,/selfPlaying\?Math\.floor\(seconds\/10\):0/,'cipher locks progress only while zero-player self-play is active');
   assert.match(source,/Math\.min\(9,selfPlaying/,'cipher search never resolves all ten glyphs');
   assert.match(app,/game\.history\+game\.finalMove,mode===0/,'initial inspector draw receives zero-player cipher state');

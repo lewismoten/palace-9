@@ -59,7 +59,7 @@ const strategicBases={
 export function simulationAlertPlan(history=''){
   return {layout:{columns:1,width:52,height:14,x:.225},levels:[
     {level:1,color:'#f2f4ea',active:true},{level:2,color:'#e77878',active:false},{level:3,color:'#d1ef65',active:false},{level:4,color:'#70c986',active:false},{level:5,color:'#79cbe5',active:false},
-  ],alert:history?{country:'us',label:'SIMULATION · LAUNCH DETECTION'}:null};
+  ],alert:history?{country:'us',label:'LAUNCH DETECTION'}:null};
 }
 function drawSimulationStatus(ctx,w,h,history){
   const plan=simulationAlertPlan(history),{layout}=plan,left=w*layout.x-layout.width/2,top=h-112;

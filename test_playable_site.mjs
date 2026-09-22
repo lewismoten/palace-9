@@ -40,9 +40,9 @@ assert.match(page,/class="compact-controls"/,'game and artifact controls use the
 assert.match(page,/\.compact-move\{grid-template-columns:9ch auto;width:max-content;margin-top:8px\}/,'Evaluate stays beside the eight-token history input');
 assert.match(page,/\.compact-move input\{width:9ch/,'history input visibly accommodates all eight tokens');
 assert.match(page,/<select id="players"[^>]*><option value="0">0<\/option><option value="1" selected>1<\/option><option value="2">2<\/option><\/select><\/div>\s*<div class="compact-controls"><button id="reset">New game<\/button>/,'New game has its own row below Players');
-assert.match(page,/<button id="reset">New game<\/button><\/div>\s*<p class="palace-note"><strong>PALACE:<\/strong> Predictive Autonomous Learning And Contingency Evaluation is a fictional training exercise for a 3×3 theater-of-war simulation, powered by deep neural networks and generative AI models\. The blips and trajectories on this screen are fantasy, not real-world data\. It is a simulation, not an operational system\.<\/p>/,'New game is followed by the PALACE fictional-simulation note');
+assert.match(page,/<button id="reset">New game<\/button><\/div>\s*<p class="palace-note"><strong>PALACE:<\/strong> Predictive Autonomous Learning And <del>Nuclear<\/del> Contingency Evaluation is a fictional training exercise for a 3×3 theater-of-war simulation, powered by deep neural networks and generative AI models\. The blips and trajectories on this screen are fantasy, not real-world data\. It is a simulation, not an operational system\.<\/p>/,'New game is followed by the PALACE fictional-simulation note with Nuclear struck through');
 assert.match(page,/\.palace-note\{font:12px\/1\.45 ui-monospace,monospace;color:var\(--muted\);margin:12px 0 0\}/,'PALACE note remains compact beneath New game');
-assert.doesNotMatch(page,/PALANCE|<del>Nuclear<\/del>/,'obsolete PALANCE and struck-through Nuclear wording are absent');
+assert.doesNotMatch(page,/PALANCE/,'obsolete PALANCE wording is absent');
 assert.ok(page.indexOf('id="players"')<page.indexOf('id="reset"'),'New game follows Players');
 assert.ok(page.indexOf('id="apply"')<page.indexOf('id="precision"'),'Precision follows Evaluate');
 assert.match(page,/\.compact-move\+\.compact-controls\{margin-top:8px\}/,'control rows are vertically separated after Evaluate');

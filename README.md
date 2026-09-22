@@ -1,6 +1,6 @@
 # PALACE-9
 
-> **Predictive Autonomous Learning And Contingency Evaluation**
+> **Predictive Autonomous Learning And ~~Nuclear~~ Contingency Evaluation**
 >
 > A local, fictional 3×3 strategic-simulation and model-inspection project.
 
