@@ -1,0 +1,21 @@
+{
+  "artifact": "/home/ai/tic-tac-toe-moe/palace9-qwen2moe-raw-history-focus-c-hf",
+  "tokenizer": "palace9-gpt2-byte-v1",
+  "vocabulary_size": 261,
+  "valid": {
+    "cases": 294777,
+    "policy_losses": 0,
+    "occupied_square_selections": 0,
+    "wrong_sentinels": 0,
+    "outside_protocol": 0,
+    "samples": []
+  },
+  "invalid": {
+    "cases": 683226,
+    "policy_losses": 0,
+    "occupied_square_selections": 0,
+    "wrong_sentinels": 0,
+    "outside_protocol": 0,
+    "samples": []
+  }
+}

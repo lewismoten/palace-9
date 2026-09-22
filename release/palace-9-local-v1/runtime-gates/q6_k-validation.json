@@ -1,0 +1,23 @@
+{
+  "runtime": "llama-server /completion with explicit <bos> raw prompt",
+  "valid": {
+    "cases": 294777,
+    "policy_losses": 0,
+    "occupied_square_selections": 0,
+    "wrong_sentinels": 0,
+    "outside_protocol": 0,
+    "transport_errors": 0,
+    "samples": []
+  },
+  "invalid": {
+    "cases": 683226,
+    "policy_losses": 0,
+    "occupied_square_selections": 0,
+    "wrong_sentinels": 0,
+    "outside_protocol": 0,
+    "transport_errors": 0,
+    "samples": []
+  },
+  "total_cases": 978003,
+  "failures": 0
+}

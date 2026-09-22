@@ -1,0 +1,25 @@
+{
+  "artifact": "palace9-qwen2moe-raw-history-f16.gguf",
+  "artifact_sha256": "eae0ad37730586934a3ed2aefdd0f6b5b69abc0841f0951518a94d0c87671ea9",
+  "runtime_gate": {
+    "runtime": "llama-server /completion with explicit <bos> raw prompt",
+    "valid_cases": 294777,
+    "invalid_cases": 683226,
+    "total_cases": 978003,
+    "failures": 0,
+    "evidence_source": "../../palace9-qwen2moe-raw-history-focus-c-hf/raw-history-llamacpp-validation.json",
+    "evidence_sha256": "21adfb3e3e27d36629a9b1ef651fab3d3816f05b4b721f519de1ec062cc90308"
+  },
+  "ollama": {
+    "model": "palace-9:f16",
+    "template": "<bos>{{ .Prompt }}",
+    "temperature": 0,
+    "num_ctx": 16,
+    "endpoint": "http://127.0.0.1:11434/api/generate",
+    "fixtures": [
+      {"prompt": "a", "expected": "e", "response": "e", "prompt_eval_count": 2, "eval_count": 1, "num_gpu": 0},
+      {"prompt": "aa", "expected": "!", "response": "!", "prompt_eval_count": 3, "eval_count": 1, "num_gpu": 0}
+    ]
+  },
+  "status": "F16 runtime gate and CPU-forced Ollama fixture probes passed; no publication performed."
+}

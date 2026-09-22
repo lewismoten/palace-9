@@ -1,0 +1,31 @@
+{
+  "source": "palace9-qwen2moe-raw-history-f16.gguf",
+  "source_sha256": "eae0ad37730586934a3ed2aefdd0f6b5b69abc0841f0951518a94d0c87671ea9",
+  "tool": "/home/ai/src/bonsai-llama/build/bin/llama-quantize",
+  "tool_build": "b10683-d8f26eec7",
+  "q8_0": {
+    "status": "unsupported",
+    "reason": "Q8_0 requires every quantized tensor column dimension to be divisible by 32. This model's narrow tensors have widths 36 or 18. Retaining every incompatible tensor as F16 leaves no Q8_0-eligible tensor, so a named Q8_0 artifact would be misleading.",
+    "artifact": null,
+    "validation": "not applicable"
+  },
+  "q6_k_substitute": {
+    "status": "validated_closest_supported",
+    "artifact": "palace9-qwen2moe-raw-history-q6_k.gguf",
+    "sha256": "797a3cd59d4da9474473525e1aa50d029fb7ed0d0056c3606eb746a9959269d2",
+    "size_bytes": 1065216,
+    "validation_report": "runtime-gates/q6_k-validation.json",
+    "validation_sha256": "17d37a1d1bef9a6373beef74adb9b06f6df0cb4517bc02c09f4ee1d4bf49dad2",
+    "validation": "978003 cases: 294777 legal + 683226 invalid; 0 failures"
+  },
+  "q4_k_m": {
+    "status": "validated",
+    "artifact": "palace9-qwen2moe-raw-history-q4_k_m.gguf",
+    "sha256": "11360c148666ccc6827b9d121ec8dad91d83fee48967ecfb7917ab64a4354ca3",
+    "size_bytes": 1065216,
+    "details": "The quantizer retained incompatible tensors as F16 and quantized compatible tensors; no all-Q4 claim is made.",
+    "validation_report": "runtime-gates/q4_k_m-validation.json",
+    "validation_sha256": "17d37a1d1bef9a6373beef74adb9b06f6df0cb4517bc02c09f4ee1d4bf49dad2",
+    "validation": "978003 cases: 294777 legal + 683226 invalid; 0 failures"
+  }
+}

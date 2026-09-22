@@ -1,0 +1,8 @@
+{
+  "format": "palace9-qwen2moe/v3",
+  "architecture": "Qwen2MoeForCausalLM",
+  "tokenizer": "palace9-gpt2-byte-v1",
+  "vocabulary_size": 261,
+  "history_format": "raw move characters without separators; one byte token per move",
+  "purpose": "causal next-move token prediction; independently trained compact llama.cpp-ready deployment model"
+}

@@ -5,6 +5,30 @@ __pycache__/
 *.log
 *.pid
 
+# Secrets, credentials, and machine-specific configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+*.kdbx
+credentials*
+secrets*
+.ssh/
+
+# Editor, OS, and test runtime noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+.pytest_cache/
+.coverage
+htmlcov/
+
 # Local services, generated reports, and temporary test outputs
 data/*.tmp
 .tmp-*/

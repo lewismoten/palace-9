@@ -1,0 +1,6 @@
+# Palace-9 local preview only: candidate F16 GGUF remains under exhaustive
+# runtime validation. This package is not a release claim.
+FROM /home/ai/tic-tac-toe-moe/palace9-qwen2moe-raw-history-f16.gguf
+PARAMETER num_ctx 16
+PARAMETER temperature 0
+TEMPLATE """<bos>{{ .Prompt }}"""

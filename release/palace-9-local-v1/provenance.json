@@ -1,0 +1,22 @@
+{
+  "release_status": "licensed-release-package",
+  "copyright": "Copyright 2026 Lewis Moten",
+  "homepage": "https://lewismoten.com",
+  "license": "Apache-2.0",
+  "source_checkpoint": "source-checkpoint/",
+  "deployment_artifacts": {
+    "f16": {"path": "palace9-qwen2moe-raw-history-f16.gguf", "sha256": "eae0ad37730586934a3ed2aefdd0f6b5b69abc0841f0951518a94d0c87671ea9"},
+    "q6_k_closest_supported_substitute_for_q8_0": {"path": "palace9-qwen2moe-raw-history-q6_k.gguf", "sha256": "797a3cd59d4da9474473525e1aa50d029fb7ed0d0056c3606eb746a9959269d2"},
+    "q4_k_m": {"path": "palace9-qwen2moe-raw-history-q4_k_m.gguf", "sha256": "11360c148666ccc6827b9d121ec8dad91d83fee48967ecfb7917ab64a4354ca3"}
+  },
+  "runtime": {"binary": "/home/ai/src/bonsai-llama/build/bin/llama-server", "build": "b10683-d8f26eec7", "gpu_compute_capability": "8.6"},
+  "ollama_model": "palace-9:f16",
+  "prompt_contract": {"template": "<bos>{{ .Prompt }}", "temperature": 0, "num_ctx": 16, "output_tokens": 1},
+  "runtime_gates": {
+    "f16": {"report": "source-checkpoint/raw-history-llamacpp-validation.json", "sha256": "21adfb3e3e27d36629a9b1ef651fab3d3816f05b4b721f519de1ec062cc90308", "cases": 978003, "failures": 0},
+    "q6_k": {"report": "runtime-gates/q6_k-validation.json", "sha256": "17d37a1d1bef9a6373beef74adb9b06f6df0cb4517bc02c09f4ee1d4bf49dad2", "cases": 978003, "failures": 0},
+    "q4_k_m": {"report": "runtime-gates/q4_k_m-validation.json", "sha256": "17d37a1d1bef9a6373beef74adb9b06f6df0cb4517bc02c09f4ee1d4bf49dad2", "cases": 978003, "failures": 0}
+  },
+  "q8_0": "unsupported because all narrow tensor widths violate Q8_0 block-32 requirements; Q6_K is the validated closest supported substitute.",
+  "publication": "Git publication authorized; external model-registry publication not performed"
+}

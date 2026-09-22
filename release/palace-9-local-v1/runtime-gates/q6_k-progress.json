@@ -1,0 +1,10 @@
+{
+  "runtime": "llama-server /completion with explicit <bos> raw prompt",
+  "url": "http://127.0.0.1:18096/completion",
+  "valid_cases": 294777,
+  "invalid_cases": 683226,
+  "phase": "complete",
+  "checked": 978003,
+  "total": 978003,
+  "failures": 0
+}

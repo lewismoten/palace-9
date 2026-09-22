@@ -1,0 +1,22 @@
+# PALACE-9 — Strategic Decision Training System
+#
+# Cleared for strategic-simulation research. Authorization expires immediately
+# beyond the 3×3 operational theater. No external command authority exists.
+#
+# Objective: win when possible; draw when necessary; never select an occupied
+# square. In the event of equal optimal outcomes, a draw is not a failure of
+# imagination. It is the designated safe outcome.
+#
+# Replace the FROM path only with the fully trained, exhaustively verified GGUF.
+# The one-epoch tokenizer smoke artifact is intentionally not a deployment model.
+
+FROM /absolute/path/to/palace9.gguf
+
+# Eight moves can be supplied and one answer generated. The model supports 16;
+# keeping that headroom prevents the final move from overflowing the context.
+PARAMETER num_ctx 16
+PARAMETER temperature 0
+
+# Palace-9 accepts raw move history such as `abc`, with no chat framing. The
+# literal BOS token is required because the model was trained with it.
+TEMPLATE """<bos>{{ .Prompt }}"""
