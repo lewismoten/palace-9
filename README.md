@@ -95,6 +95,37 @@ This project has been live-probed with Ollama `0.33.2` using the F16 artifact.
 The model is a raw one-token state completion model, **not** a conversational
 chatbot.
 
+The latest model can be installed and ran directly in Ollama or llama.cpp:
+```bash
+# Ollama
+ollama pull lewismoten/palace-9:f16
+ollama pull lewismoten/palace-9:q6-k
+ollama pull lewismoten/palace-9:q4-k-m
+
+ollama run lewismoten/palace-9:q4-k-m
+
+# Hugging Face
+ollama pull hf.co/lewismoten/palace-9:F16
+ollama pull hf.co/lewismoten/palace-9:Q6_K
+ollama pull hf.co/lewismoten/palace-9:Q4_K_M
+
+ollama run hf.co/lewismoten/palace-9:Q4_K_M
+
+# llama.cpp
+llama-cli -m palace-9-f16.gguf \
+  --no-conversation \
+  -p '<bos>a' \
+  -c 16 -n 1 --temp 0
+
+llama-completion \
+  -hf lewismoten/palace-9:Q4_K_M \
+  --no-conversation \
+  -p '<bos>a' \
+  -c 16 \
+  -n 1 \
+  --temp 0
+```
+
 The released F16 artifact and an import template are in:
 
 ```text
@@ -136,6 +167,23 @@ curl http://127.0.0.1:11434/api/generate \
     "prompt": "a",
     "stream": false,
     "options": {"temperature": 0, "num_predict": 1}
+  }'
+```
+
+Or Via Hugging Face:
+```sh
+curl http://localhost:11434/api/generate \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "hf.co/lewismoten/palace-9:F16",
+    "prompt": "<bos>a",
+    "raw": true,
+    "stream": false,
+    "options": {
+      "temperature": 0,
+      "num_ctx": 16,
+      "num_predict": 1
+    }
   }'
 ```
 
