@@ -1,5 +1,7 @@
 # PALACE-9
 
+![Palace-9: Tic-tac-toe & model inspection](assets/social-preview.jpg)
+
 > **Predictive Autonomous Learning And ~~Nuclear~~ Contingency Evaluation**
 >
 > A local, fictional 3×3 strategic-simulation and model-inspection project.
